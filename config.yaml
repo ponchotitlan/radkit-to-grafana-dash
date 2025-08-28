@@ -1,5 +1,0 @@
-radkit-config:
-  server-host: <YOUR_RADKIT_SERVER_HOST>
-  server-port: <YOUR_RADKIT_SERVER_PORT>
-  radkit-service-username: <YOUR_RADKIT_REMOTE_USERNAME>
-  radkit-service-code: <YOUR_RADKIT_SERVICE_CODE>

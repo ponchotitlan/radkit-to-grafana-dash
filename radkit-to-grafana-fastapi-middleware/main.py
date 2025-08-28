@@ -1,13 +1,16 @@
-import os
-import sys
-import yaml
-import uvicorn
-import radkit_genie
+from typing import Any
 from fastapi import FastAPI
 from radkit_client.sync import Client
+from influxdb_client import InfluxDBClient, Point
+from influxdb_client.client.write_api import SYNCHRONOUS
+import radkit_genie
+import yaml
+import json
+import uvicorn
+import os
 
 INFLUXDB_URI = "http://influxdb:8086"
-CONFIG_YAML = "/app/radkit-to-grafana-agent-config/config.yaml"
+CONFIG_YAML = "/app/radkit-to-grafana-config/config.yaml"
 SECRET_FILE_PATH = "/run/secrets/radkit_credentials.b64"
 SECRET_ENV_NAME = "RADKIT_CLIENT_PRIVATE_KEY_PASSWORD_BASE64"
 

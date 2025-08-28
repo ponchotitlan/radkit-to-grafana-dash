@@ -18,16 +18,16 @@ services:
     restart: always
     volumes:
       - type: bind
-        source: ./radkit-to-grafana-agent-config/.radkit_user.b64
+        source: ./radkit-to-grafana-config/.radkit_user.b64
         target: /run/secrets/radkit_credentials.b64
         read_only: true
         bind:
           create_host_path: true
       - type: bind
-        source: radkit-to-grafana-agent-config/
-        target: /app/radkit-to-grafana-agent-config
+        source: radkit-to-grafana-config/
+        target: /app/radkit-to-grafana-config
       - type: bind
-        source: radkit-to-grafana-agent-config/identity-files/
+        source: radkit-to-grafana-config/identity-files/
         target: /root/.radkit
         
   grafana:
@@ -46,7 +46,7 @@ services:
     container_name: influxdb
     environment:
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: radkit-to-grafana
-      DOCKER_INFLUXDB_INIT_BUCKET: default-bucket
+      DOCKER_INFLUXDB_INIT_BUCKET: my-radkit-bucket
       DOCKER_INFLUXDB_INIT_MODE: setup
       DOCKER_INFLUXDB_INIT_ORG: radkit-to-grafana
       DOCKER_INFLUXDB_INIT_PASSWORD: cisco123

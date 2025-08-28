@@ -6,7 +6,7 @@
 #
 # - run: 	Sets up and starts the radkit-to-grafana services using Docker Compose.
 # 			It first prompts the user for a password, base64 encodes it, and saves it
-# 			to a temporary secret file ('radkit-to-grafana-agent-config/.radkit_user.b64').
+# 			to a temporary secret file ('radkit-to-grafana-config/.radkit_user.b64').
 # 			Then, it starts the Docker Compose services in detached mode, waiting for them
 # 			to become healthy (up to 120 seconds).
 #
@@ -16,7 +16,7 @@
 # - onboard: 	Builds and runs a Docker container for client onboarding.
 # 				It builds an image named 'radkit-client-onboarding' using a specific Dockerfile
 # 				located in 'radkit-to-grafana-client-onboarding/'. Then, it runs this container
-# 				interactively, mounting the 'radkit-to-grafana-agent-config' directory into it.
+# 				interactively, mounting the 'radkit-to-grafana-config' directory into it.
 
 .PHONY: build run clean onboard
 
@@ -25,7 +25,7 @@ IMAGE_NAME := fastapi-middleware
 # Application directory
 APP_DIR := radkit-to-grafana-fastapi-middleware/
 # Temporary secret file name (created in the current directory)
-SECRET_FILE := radkit-to-grafana-agent-config/.radkit_user.b64
+SECRET_FILE := radkit-to-grafana-config/.radkit_user.b64
 
 all: up
 
@@ -68,5 +68,5 @@ clean:
 onboard:
 	docker build -f radkit-to-grafana-client-onboarding/Dockerfile -t radkit-client-onboarding .
 	docker run -it --rm \
-		-v "$(PWD)/radkit-to-grafana-agent-config:/radkit-to-grafana-agent-config" \
+		-v "$(PWD)/radkit-to-grafana-config:/radkit-to-grafana-config" \
 		radkit-client-onboarding

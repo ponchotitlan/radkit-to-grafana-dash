@@ -1,4 +1,4 @@
 radkit-to-grafana-collection-scheduler/.venv
-radkit-to-grafana-agent-config/identity-files/identities
-radkit-to-grafana-agent-config/.radkit_user.b64
-radkit-to-grafana-client-onboarding/.venv
+radkit-to-grafana-config/identity-files/identities
+radkit-to-grafana-config/.radkit_user.b64
+radkit-to-grafana-fastapi-middleware/main_demo.py

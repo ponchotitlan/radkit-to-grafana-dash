@@ -1,0 +1,16 @@
+# Cron schedule configuration for the collection python script
+
+# minute: Minute field of the cron schedule (0-59 or */n for every n minutes)
+minute: */1
+
+# hour: Hour field of the cron schedule (0-23 or * for every hour)
+hour: *
+
+# day_of_month: Day of the month field (1-31 or * for every day)
+day_of_month: *
+
+# month: Month field (1-12 or * for every month)
+month: *
+
+# day_of_week: Day of the week field (0-7, where both 0 and 7 mean Sunday, or * for every day)
+day_of_week: *

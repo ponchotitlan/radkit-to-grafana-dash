@@ -3,7 +3,7 @@ import shutil
 import yaml
 from radkit_client.sync import Client
 
-CONFIG_YAML = "/radkit-to-grafana-agent-config/config.yaml"
+CONFIG_YAML = "/radkit-to-grafana-config/config.yaml"
 IDENTITIES_FOLDER = ".radkit/identities"
 
 def enroll_radkit_client():
@@ -26,7 +26,7 @@ def enroll_radkit_client():
 def copy_radkit_identities_to_test():
     """
     Finds the current user directory, constructs the source path for .radkit/identities,
-    and copies it to a 'radkit-to-grafana-agent-config/identity-files' directory one level up from the current working directory.
+    and copies it to a 'radkit-to-grafana-config/identity-files' directory one level up from the current working directory.
     """
     try:
         user_home_dir = os.path.expanduser('~')
@@ -39,7 +39,7 @@ def copy_radkit_identities_to_test():
 
         current_working_dir = os.getcwd()
         destination_parent_dir = os.path.abspath(os.path.join(current_working_dir, '..'))
-        destination_path = os.path.join(destination_parent_dir, '/radkit-to-grafana-agent-config/identity-files', 'identities')
+        destination_path = os.path.join(destination_parent_dir, '/radkit-to-grafana-config/identity-files', 'identities')
         os.makedirs(os.path.dirname(destination_path), exist_ok=True)
 
         if os.path.exists(destination_path):
