@@ -1,0 +1,82 @@
+name: radkit-to-grafana
+services:
+  fastapi-middleware:
+    healthcheck:
+      test: ["CMD", "python", "/app/healthcheck.py"]
+      timeout: 5s
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    image: fastapi-middleware
+    networks:
+      radkit-to-grafana-app-network: null
+    ports:
+      - mode: ingress
+        target: 8000
+        published: "8000"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: ./radkit-to-grafana-agent-config/.radkit_user.b64
+        target: /run/secrets/radkit_credentials.b64
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: radkit-to-grafana-agent-config/
+        target: /app/radkit-to-grafana-agent-config
+      - type: bind
+        source: radkit-to-grafana-agent-config/identity-files/
+        target: /root/.radkit
+        
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    networks:
+      radkit-to-grafana-app-network: null
+    ports:
+      - mode: ingress
+        target: 3000
+        published: "3000"
+        protocol: tcp
+    restart: always
+
+  influxdb:
+    container_name: influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: radkit-to-grafana
+      DOCKER_INFLUXDB_INIT_BUCKET: default-bucket
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_ORG: radkit-to-grafana
+      DOCKER_INFLUXDB_INIT_PASSWORD: cisco123
+      DOCKER_INFLUXDB_INIT_RETENTION: "0"
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+    image: influxdb:2
+    networks:
+      radkit-to-grafana-app-network: null
+    ports:
+      - mode: ingress
+        target: 8086
+        published: "8086"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: influxdb2_data
+        target: /var/lib/influxdb2
+        volume: {}
+      - type: volume
+        source: influxdb2_config
+        target: /etc/influxdb2
+        volume: {}
+
+networks:
+  radkit-to-grafana-app-network:
+    name: radkit-to-grafana-app-network
+    driver: bridge
+
+volumes:
+  influxdb2_config:
+    name: radkit-to-grafana_influxdb2_config
+  influxdb2_data:
+    name: radkit-to-grafana_influxdb2_data
