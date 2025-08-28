@@ -139,7 +139,7 @@ docker build -t fastapi-middleware radkit-to-grafana-fastapi-middleware/
 --- 🚀 Setting up the radkit-to-grafana services ---
 🔑 Enter the Private Key password of 'radkit-service-username' from your config.yaml file:
 [+] Running 4/4
- ✔ Network radkit-to-grafana-app-network     Created
+ ✔ Network radkit-to-grafana-app-network                       Created
  ✔ Container radkit-to-grafana-fastapi-middleware-1            Healthy 
  ✔ Container grafana                                           Healthy
  ✔ Container influxdb                                          Healthy
