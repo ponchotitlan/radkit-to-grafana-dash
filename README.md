@@ -1,5 +1,7 @@
 # ✨📊📈📉🤖 RADKit-to-Grafana Dashboard Framework
 
+⚠️ This is a work in progress! ⚠️
+
 > **Disclaimer**: The screenshot above represents a possible Use Case of the framework in this repository. This is not an out-of-the-box state.
 
 Containerised framework for the creation of dashboards (current configurations, time-series) based on the interaction with a Cisco RADKit agent and it's inventory devices.
