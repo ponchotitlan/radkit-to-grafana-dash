@@ -105,7 +105,7 @@ You are now ready to mount the radkit-to-grafana environment.
 #### 5. Create your own RADKit API endpoints
 Now comes your time to code! The definition of your API endpoints for populating the Grafana dashboards go in the `radkit-to-grafana-fastapi-middleware/main.py` file.
 
-👉 For a detailed guide on how to develop these endpoints, please check [this guide]().
+👉👉 For a detailed guide on how to develop these endpoints, please check [this guide](https://github.com/ponchotitlan/radkit-to-grafana-dash/wiki/API-endpoints-for-RADKit-interaction).
 
 
 ### 🚀 Running the Services
