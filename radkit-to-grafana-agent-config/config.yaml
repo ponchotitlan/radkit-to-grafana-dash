@@ -1,5 +1,6 @@
 radkit-config:
-  server-host: <YOUR_RADKIT_SERVER_HOST>
-  server-port: <YOUR_RADKIT_SERVER_PORT>
-  radkit-service-username: <YOUR_RADKIT_REMOTE_USERNAME>
-  radkit-service-code: <YOUR_RADKIT_SERVICE_CODE>
+  server-host: "0.0.0.0"
+  server-port: 8000
+  radkit-service-username: "alfsando@cisco.com"
+  radkit-service-code: "0ki4-old4-wi1w"
+  # radkit-service-code: "kfl0-ej6x-y5p7"

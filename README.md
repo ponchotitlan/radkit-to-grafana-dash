@@ -2,7 +2,7 @@
 
 ⚠️ This is a work in progress! ⚠️
 
-> **Disclaimer**: The screenshot above represents a possible Use Case of the framework in this repository. This is not an out-of-the-box state.
+> **Disclaimer**: The screenshot above represents a possible Use Case of the framework in this repository.
 
 Containerised framework for the creation of dashboards (current configurations, time-series) based on the interaction with a Cisco RADKit agent and it's inventory devices.
 
@@ -16,7 +16,7 @@ The "RADKit-to-Grafana Dashboard Framework" project provides a framework to gain
 
 The solution is containerized using Docker Compose and comprises the following services:
 
-*   🧲 **`fastapi-middleware`**: A Python-based FastAPI server that acts as a crucial intermediary. It provides API endpoints for interacting with the RADKit service (e.g., retrieving device inventory, fetching interface details, and measuring power consumption). This service bridges the data flow between RADKit and the InfluxDB/Grafana stack.
+*   🧲 **`fastapi-middleware`**: A Python-based FastAPI server that acts as a crucial intermediary. It provides API endpoints for interacting with the RADKit service. This service bridges the data flow between RADKit and the InfluxDB/Grafana stack.
 
 *   📊 **`grafana`**: A Grafana container responsible for visualizing the collected information - real-time monitoring and historical analysis.
 
