@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&labelColor=555555&logoColor=white" alt="Python"/>
   <img src="https://img.shields.io/badge/Cisco-1BA0D7?style=flat&logo=cisco&labelColor=555555&logoColor=white" alt="Cisco"/>
   <img src="https://img.shields.io/badge/Grafana-F46800?style=flat&logo=grafana&labelColor=555555&logoColor=white" alt="Grafana"/>
-  <img src="https://img.shields.io/github/stars/your-org/your-repo?style=social" alt="GitHub Stars"/>
+  <a href="https://developer.cisco.com/codeexchange/github/repo/ponchotitlan/radkit-to-grafana-dash"><img src="https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg" alt="DevNet"/></a>
 </div></h1>
 
 <div align="center">
