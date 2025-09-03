@@ -50,6 +50,8 @@ Before you begin, ensure you have the following installed:
 *   [Docker](https://docs.docker.com/get-docker/)
 *   [Docker Compose](https://docs.docker.com/compose/install/) (usually included with Docker Desktop)
 
+> This framework is intended for **Linux-based OS hosts**, and has been successfully tested in `macOS` and various Linux distributions. The utilities use `Makefile` targets which are not compatible with Windows systems.
+
 ### 🔑 Configuration
 #### 1. Add a Remote User to RADKit
 Ensure your Cisco RADKit server has at least one active user in the **Remote Users** section. Refer to the [RADKit official documentation - Adding remote users](https://radkit.cisco.com/docs/quick_start_guide.html#adding-remote-users) for details.
