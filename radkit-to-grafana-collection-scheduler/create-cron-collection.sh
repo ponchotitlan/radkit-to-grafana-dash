@@ -8,8 +8,8 @@
 #   remove  - Remove the existing cron job created by this script
 #   schedule.yaml - YAML file containing the cron schedule (required only for 'add' option)
 
-CRON_COMMENT="#moneybyte_cron_job"
-CMD="/usr/local/bin/docker run --rm --network moneybyte_moneybyte-app-network --name moneybyte-collector moneybyte-collector"
+CRON_COMMENT="#radkit_to_grafana_cron_job"
+CMD="/usr/bin/docker run --rm --network radkit-to-grafana-app-network --name radkit-collector radkit-collector"
 
 function add_cron_job() {
     local schedule_file=$1
@@ -32,16 +32,17 @@ function add_cron_job() {
     fi
 
     # Building of the image
-    docker build -t moneybyte-collector .
+    docker build -t radkit-collector .
 
     # Remove any existing cron job with the comment
-    crontab -l | grep -v "$CRON_COMMENT" | crontab -
+    crontab -l 2>/dev/null | grep -v "$CRON_COMMENT" | crontab - || true
 
-    # Add new cron job
-    echo "$minute $hour $day_of_month $month $day_of_week $CMD $CRON_COMMENT >> /tmp/moneybyte_cronjob.log 2>&1"
-    (crontab -l 2>/dev/null; echo "$minute $hour $day_of_month $month $day_of_week $CMD $CRON_COMMENT >> /tmp/moneybyte_cronjob.log 2>&1") | crontab -
+    # Add new cron job (redirect must come BEFORE the comment)
+    CRON_ENTRY="$minute $hour $day_of_month $month $day_of_week $CMD >> /tmp/radkit_cronjob.log 2>&1 $CRON_COMMENT"
+    (crontab -l 2>/dev/null; echo "$CRON_ENTRY") | crontab -
 
-    echo "=============MoneyByte Cron job added/updated successfully.============="
+    echo "=============RADKit-to-Grafana Cron job added/updated successfully.============="
+    echo "Cron entry: $CRON_ENTRY"
 }
 
 function remove_cron_job() {
