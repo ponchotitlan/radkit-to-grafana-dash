@@ -10,8 +10,8 @@ COPY requirements.txt /app
 # Install dependencies: Installs the Python dependencies listed in requirements.txt.
 RUN pip install -r requirements.txt
 
-# Copy application files: Copies all files from the current directory on the host to the /app directory in the container.
-COPY . /app
+# Note: Application files are mounted as a volume in docker-compose.yml for hot-reload support
+# COPY . /app (removed - code is mounted at runtime)
 
 # Command to run the application: Specifies the command to execute when the container starts.
 CMD ["python", "main.py"]
