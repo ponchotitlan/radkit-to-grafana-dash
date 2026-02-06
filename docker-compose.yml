@@ -29,6 +29,9 @@ services:
       - type: bind
         source: radkit-to-grafana-config/identity-files/
         target: /root/.radkit
+      - type: bind
+        source: ./radkit-to-grafana-fastapi-middleware
+        target: /app
         
   grafana:
     container_name: grafana
