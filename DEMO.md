@@ -20,7 +20,7 @@
 
 | Field | Value |
 |-------|-------|
-| URL | /device/${Device}/interface-details |
+| URL | /device/${Device}/interfaces/brief |
 | name | 🔌 Name |
 | ip_address | 🔀 IP Address |
 | protocol | 🌐 Protocol Status |
