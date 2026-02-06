@@ -116,31 +116,26 @@ def exec_show_cmd(device_name: str, cmd:str) -> Any:
      - cmd: The CLI command to execute (e.g., "show version").
      - Returns: The raw output of the command execution.
     '''
-    single_result = service.inventory[device_name].exec(cmd).wait()
-    return single_result.result.data
+    raw_result = service.inventory[device_name].exec(cmd).wait()
+    return raw_result.result.data
 
 
-@app.get("/device/{device_name}/interfaces")
-def get_interfaces(device_name: str) -> list[str]:
+@app.get("/device/{device_name}/parse/{cmd}")
+def exec_show_cmd(device_name: str, cmd:str) -> Any:
     '''
-    Retrieves a list of all the interfaces of a device.
-    - device_name: The name of the device as defined in RADKit inventory.
-    - Returns: A list of interface names.
+    Executes any given command on a specified device and returns the raw output.
+     - device_name: The name of the device as defined in RADKit inventory.
+     - cmd: The CLI command to execute (e.g., "show version").
+     - Returns: The raw output of the command execution.
     '''
-    try:
-        raw_result = service.inventory[device_name].exec("show interfaces summary").wait()
-        parsed_result = radkit_genie.parse(raw_result).to_dict()
-        interfaces_list = parsed_result[device_name]["show interfaces summary"]["interfaces"]
-        return list(interfaces_list.keys())
-    except Exception as ex:
-        print(f"⚠️ Issue with query (show interfaces summary) on device ({device_name}) - {ex}")
-        return ["ERROR"]
+    raw_result = service.inventory[device_name].exec(cmd).wait()
+    return radkit_genie.parse(raw_result).to_dict()
 
 
-@app.get("/device/{device_name}/interface-details")
-def get_interface_details_device(device_name: str) -> list:
+@app.get("/device/{device_name}/interfaces/brief")
+def get_interfaces_brief_device(device_name: str) -> list:
     """
-    Retrieve detailed interface information from a network device.
+    Retrieve brief interface information from a network device.
     Returns data in a homogeneous format regardless of device type, ideal for Grafana visualization.
     
     CLI Commands:
@@ -173,6 +168,10 @@ def get_interface_details_device(device_name: str) -> list:
     if device_type in ["cisco_ios", "cisco_xe", "ios", "iosxe", "ios_xe"]:
         # Process Cisco IOS/IOS-XE format
         for interface_name, interface_data in values.get('interface', {}).items():
+            # Skip empty interfaces (like the prompt line)
+            if not interface_data.get('ip_address'):
+                continue
+                
             homogenized_item = {
                 'name': interface_name,
                 'ip_address': interface_data.get('ip_address', 'unassigned'),
@@ -184,9 +183,13 @@ def get_interface_details_device(device_name: str) -> list:
     elif device_type in ["cisco_xr", "iosxr", "ios_xr"]:
         # Process Cisco IOS-XR format to match the same structure
         for interface_name, interface_data in values.get('interface', {}).items():
+            # Skip empty interfaces
+            if not interface_data.get('ip_address') and not interface_data.get('ipv4'):
+                continue
+                
             homogenized_item = {
                 'name': interface_name,
-                'ip_address': interface_data.get('ipv4', {}).get('ip', 'unassigned') if isinstance(interface_data.get('ipv4'), dict) else 'unassigned',
+                'ip_address': interface_data.get('ip_address', 'unassigned'),
                 'status': interface_data.get('status', 'unknown'),
                 'protocol': interface_data.get('protocol', 'unknown')
             }
@@ -207,9 +210,12 @@ def get_interface_traffic(device_name: str) -> Any:
 
     # Process each interface and prepare data for InfluxDB
     for interface in parsed_result[device_name]["show interfaces"]:
-        if "rate" in parsed_result[device_name]["show interfaces"][interface]["counters"].keys():
-            in_rate = parsed_result[device_name]["show interfaces"][interface]["counters"]["rate"]["in_rate"]
-            out_rate = parsed_result[device_name]["show interfaces"][interface]["counters"]["rate"]["out_rate"]
+        # Check if counters exist for this interface
+        interface_data = parsed_result[device_name]["show interfaces"][interface]
+        
+        if "counters" in interface_data and "rate" in interface_data["counters"]:
+            in_rate = interface_data["counters"]["rate"]["in_rate"]
+            out_rate = interface_data["counters"]["rate"]["out_rate"]
             total_rate = in_rate + out_rate
         else:
             total_rate = 0
@@ -232,6 +238,46 @@ def get_interface_traffic(device_name: str) -> Any:
     except Exception as e:
         print(f"Error writing to InfluxDB: {e}")
         return {"status": True, "msg": f"Error: {e}"}
+
+
+@app.get("/device/{device_name}/version")
+def get_version_device(device_name: str) -> list:
+    """
+    Retrieve version information from a network device.
+    Returns data in a homogeneous format regardless of device type, ideal for Grafana visualization.
+    
+    CLI Commands:
+    - Cisco IOS/IOS-XE: show version
+    - Cisco IOS-XR: show version
+    """
+    # Fetch device from RADKit inventory
+    device = service.inventory[device_name]
+    
+    # Get device type from device metadata
+    device_type = str(device.device_type).lower() if hasattr(device, 'device_type') else ''
+    
+    # Execute CLI command (same for all Cisco platforms)
+    result = device.exec("show version").wait()
+    command_key = "show version"
+    
+    # Parse with radkit_genie
+    parsed = radkit_genie.parse(result)
+    values = parsed[device_name][command_key].data
+    
+    # Extract version data
+    version_data = values.get('version', {})
+    
+    # Homogenize data across device types
+    homogenized_version = {
+        'platform': version_data.get('platform', 'unknown'),
+        'version_short': version_data.get('version_short', 'unknown'),
+        'os': version_data.get('os', 'unknown'),
+        'chassis': version_data.get('chassis', 'unknown'),
+        'uptime': version_data.get('uptime', 'unknown')
+    }
+    
+    # Return as list for Grafana
+    return [homogenized_version]
 
 
 def main():
