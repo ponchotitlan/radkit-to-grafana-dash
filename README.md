@@ -13,7 +13,7 @@
 </div></h1>
 
 <div align="center">
-A containerized framework to create dynamic Grafana dashboards (for current configurations and time-series data) by interacting with Cisco RADKit servers and network devices.<br /><br />
+A containerized framework to create dynamic Grafana dashboards (for current configurations and time-series data) by interacting with Cisco RADKit servers and network devices.  <br /><br />
 </div>
 
 ![dashboard_built](wiki-images/g17.png)
